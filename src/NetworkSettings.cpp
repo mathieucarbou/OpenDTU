@@ -151,7 +151,11 @@ void NetworkSettingsClass::setupMode()
         WiFi.mode(WIFI_AP_STA);
         String ssidString = getApName();
         WiFi.softAPConfig(_apIp, _apIp, _apNetmask);
-        WiFi.softAP(ssidString.c_str(), Configuration.get().Security.Password);
+        if (Configuration.get().Security.AllowReadonly) {
+            WiFi.softAP(ssidString.c_str());
+        } else {
+            WiFi.softAP(ssidString.c_str(), Configuration.get().Security.Password);
+        }
         _dnsServer->setErrorReplyCode(DNSReplyCode::NoError);
         _dnsServer->start(DNS_PORT, "*", WiFi.softAPIP());
         _dnsServerStatus = true;
