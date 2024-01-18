@@ -169,6 +169,8 @@ bool ConfigurationClass::read()
         MessageOutput.println("Failed to read file, using default configuration");
     }
 
+    serializeJson(doc, Serial);
+
     JsonObject cfg = doc["cfg"];
     config.Cfg.Version = cfg["version"] | CONFIG_VERSION;
     config.Cfg.SaveCount = cfg["save_count"] | 0;
